@@ -102,18 +102,16 @@ export default function PokemonCardTile(props) {
           _jsxs("div", {
             className: "flex flex-wrap gap-1",
             children: [
-              card.types
-                ?.slice(0, 2)
-                .map((type) =>
-                  _jsx(
-                    Badge,
-                    {
-                      label: type,
-                      style: TYPE_BADGE_STYLES[type] ?? DEFAULT_TYPE_BADGE_STYLE,
-                    },
-                    type,
-                  ),
+              card.types?.slice(0, 2).map((type) =>
+                _jsx(
+                  Badge,
+                  {
+                    label: type,
+                    style: TYPE_BADGE_STYLES[type] ?? DEFAULT_TYPE_BADGE_STYLE,
+                  },
+                  type,
                 ),
+              ),
               rarityStyle &&
                 card.rarity &&
                 _jsx(Badge, { label: card.rarity, style: rarityStyle }),
