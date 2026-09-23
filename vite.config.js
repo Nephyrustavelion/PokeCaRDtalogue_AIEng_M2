@@ -10,10 +10,16 @@ const siteConfiguration = {};
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
   const emitSourcemaps = mode === "development";
+  // GitHub Actions sets GITHUB_REPOSITORY ("owner/repo") automatically; use it to
+  // derive the repo-name subpath GitHub Pages serves the site from, without
+  // hardcoding the repo name or affecting local dev/build.
+  const ghPagesRepoName = process.env.GITHUB_REPOSITORY?.split("/")[1];
   return {
     base: process.env.FIGMA_PUBLIC_URL
       ? `${process.env.FIGMA_PUBLIC_URL}/`
-      : "/",
+      : ghPagesRepoName
+        ? `/${ghPagesRepoName}/`
+        : "/",
     build: {
       sourcemap: emitSourcemaps ? "inline" : false,
       minify: !emitSourcemaps,
