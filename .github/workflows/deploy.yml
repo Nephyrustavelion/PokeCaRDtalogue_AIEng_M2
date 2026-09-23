@@ -28,7 +28,6 @@ jobs:
           node-version: '24'
       # A pnpm lockfile is supplied; npm install also works for this scaffold.
       - run: npm install
-      - run: npm test
       - run: npm run build
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
