@@ -1,0 +1,71 @@
+.filter-sidebar {
+  background: var(--card);
+}
+
+.filter-sidebar--desktop {
+  border-right: 1px solid var(--border);
+}
+
+.filter-sidebar__section {
+  border-color: var(--border);
+}
+
+.filter-sidebar__section-button {
+  color: var(--secondary-foreground);
+}
+
+.filter-sidebar__header,
+.filter-sidebar__footer {
+  border-color: var(--border);
+}
+
+.filter-sidebar__title {
+  color: var(--foreground);
+}
+
+.filter-sidebar__count {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  min-width: 18px;
+}
+
+.filter-sidebar__checkbox {
+  border-color: #d0cec8;
+  background: var(--card);
+}
+
+.filter-sidebar__checkbox--checked {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.filter-sidebar__label {
+  color: #6b6b64;
+}
+
+.filter-sidebar__label--checked {
+  color: var(--foreground);
+}
+
+.filter-sidebar__select {
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.filter-sidebar__link-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary);
+  padding: 0;
+}
+
+.filter-sidebar__link-button:disabled {
+  color: #b5b3ac;
+  cursor: default;
+}
+
+.filter-sidebar__scroll-list {
+  scrollbar-width: thin;
+}

@@ -1,0 +1,27 @@
+.navbar {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-color: var(--border);
+}
+
+.navbar__brand {
+  color: var(--foreground);
+  font-family: var(--font-dm-serif);
+}
+
+.navbar__cart-count {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+}
+
+.navbar__avatar {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.navbar__user-name {
+  color: var(--secondary-foreground);
+}

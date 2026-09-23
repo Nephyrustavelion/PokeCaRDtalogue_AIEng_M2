@@ -1,4 +1,4 @@
-name: Deploy Card Atlas
+name: Deploy PokeCaRDtalogue
 
 # Support either common default-branch name in a NEW repository.
 on:

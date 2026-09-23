@@ -1,0 +1,33 @@
+.cart-success-icon {
+  background: #f0fdf4;
+}
+
+.cart-empty-icon,
+.cart-thumbnail {
+  background: var(--secondary);
+}
+
+.cart-dialog-card,
+.cart-item,
+.cart-summary {
+  border-color: var(--border);
+}
+
+.cart-clear-button {
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+.cart-remove-button:hover,
+.cart-clear-button:hover {
+  background: #fef2f2;
+}
+
+.cart-thumbnail {
+  width: 60px;
+  height: 84px;
+}
+
+.cart-summary-list {
+  max-height: 220px;
+}
