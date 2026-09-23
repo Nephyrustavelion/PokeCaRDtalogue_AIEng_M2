@@ -185,11 +185,17 @@ export async function fetchCardsPage({
       ),
     );
     settled.forEach((outcome, index) => {
-      if (outcome.status === "fulfilled") {
-        cards.push(toTcgDexCard(outcome.value));
-      } else {
-        cards.push(toTcgDexCard(batch[index]));
+      const card =
+        outcome.status === "fulfilled"
+          ? toTcgDexCard(outcome.value)
+          : toTcgDexCard(batch[index]);
+
+      // Skip incomplete records that have no usable image.
+      if (!card.image) {
+        return;
       }
+
+      cards.push(card);
     });
   }
 

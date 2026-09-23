@@ -66,7 +66,11 @@ function CheckoutDialog({ count, onClose, onBackToCatalogue }) {
   });
 }
 export default function Cart() {
-  const { cart, removeFromCart, clearCart } = useApp();
+const {
+  cart,
+  removeFromCart,
+  clearCart,
+} = useApp();
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const handleCheckout = () => setShowDialog(true);
