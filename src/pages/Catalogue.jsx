@@ -1,4 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+
+import AddMyCardForm from "../components/AddMyCardForm";
+
 import {
   Search,
   X,
@@ -32,7 +35,18 @@ const SEARCH_DEBOUNCE_MS = 350;
 const EMPTY_FILTERS = { types: [], rarities: null, setNames: null };
 
 export default function Catalogue() {
-  const { addToCart, isInCart } = useApp();
+  const {
+    addToCart,
+    isInCart,
+    collection,
+    addToCollection,
+    updateCollectionCard,
+    removeFromCollection,
+  } = useApp();
+
+  // State used when editing a user-created card note.
+  const [editingCard, setEditingCard] = useState(null);
+  const [editNote, setEditNote] = useState("");
 
   // Filter metadata sourced from the TCGdex API (types/rarities/set names).
   const [metaTypes, setMetaTypes] = useState([]);
@@ -131,6 +145,7 @@ export default function Catalogue() {
           limit,
         });
         if (cancelled) return;
+        console.log("TCGdex cards:", fetched);
         setCards(fetched);
         setHasNextPage(next);
         setApiMessage(
@@ -164,6 +179,35 @@ export default function Catalogue() {
 
   const handleSearch = (value) => {
     setSearchInput(value);
+  };
+
+  // Opens the edit form for one user-created card.
+  const handleEditCard = (card) => {
+    setEditingCard(card);
+    setEditNote(card.note || "");
+  };
+
+  // Saves the updated personal note into collection state.
+  const handleSaveEdit = () => {
+    if (!editingCard) return;
+
+    updateCollectionCard(editingCard.id, {
+      note: editNote.trim(),
+    });
+
+    setEditingCard(null);
+    setEditNote("");
+  };
+
+  // Cancels editing without changing the card.
+  const handleCancelEdit = () => {
+    setEditingCard(null);
+    setEditNote("");
+  };
+
+  // Deletes one user-created card from the collection.
+  const handleDeleteCard = (cardId) => {
+    removeFromCollection(cardId);
   };
 
   const handleRetryMeta = () => {
@@ -308,6 +352,9 @@ export default function Catalogue() {
               Explore Pokémon trading cards and add the cards you love to your
               collection.
             </p>
+            <div className="mt-6">
+              <AddMyCardForm onAddCard={addToCollection} />
+            </div>
           </div>
 
           <div className="flex items-center gap-3 mb-4 lg:hidden">
@@ -416,7 +463,62 @@ export default function Catalogue() {
               </button>
             </div>
           )}
+          {editingCard && (
+            <div className="mb-6 bg-white border rounded-xl p-4">
+              <h2 className="app-text-strong text-lg font-semibold mb-2">
+                Edit Personal Note
+              </h2>
 
+              <p className="app-text-body text-sm mb-3">
+                Editing: {editingCard.name}
+              </p>
+
+              <textarea
+                value={editNote}
+                onChange={(e) => setEditNote(e.target.value)}
+                placeholder="Enter your personal note..."
+                className="w-full border rounded-lg p-3 mb-3"
+              />
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleSaveEdit}
+                  className="app-primary-action px-4 py-2 rounded-lg"
+                >
+                  Save
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="app-secondary-action px-4 py-2 rounded-lg border"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+          {collection.length > 0 && (
+            <div className="mb-6">
+              <h2 className="app-text-strong text-lg font-semibold mb-3">
+                My Added Cards
+              </h2>
+
+              <div className="catalogue-grid grid gap-4">
+                {collection.map((card) => (
+                  <PokemonCardTile
+                    key={card.id}
+                    card={card}
+                    inCart={isInCart(card.id)}
+                    onAddToCart={addToCart}
+                    onEditCard={handleEditCard}
+                    onDeleteCard={handleDeleteCard}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
           <div className="catalogue-grid grid gap-4">
             {loading
               ? Array.from({ length: Math.min(limit, 12) }, (_, index) => (
