@@ -4,8 +4,37 @@ import {
   createContext,
   useContext,
   useEffect,
+  useReducer,
   useState,
 } from "react";
+
+const initialCart = [];
+
+function cartReducer(state, action) {
+  switch (action.type) {
+    case "add": {
+      const { card } = action.payload;
+      const alreadyInCart = state.some((item) => item.card.id === card.id);
+
+      if (alreadyInCart) {
+        return state;
+      }
+
+      return [...state, { card }];
+    }
+
+    case "remove": {
+      return state.filter((item) => item.card.id !== action.payload.cardId);
+    }
+
+    case "clear": {
+      return [];
+    }
+
+    default:
+      return state;
+  }
+}
 
 // Create one shared context so different pages/components
 // can access the same user, cart, and collection state.
@@ -16,7 +45,7 @@ export function AppProvider({ children }) {
   const [user, setUser] = useState(null);
 
   // Stores cards temporarily selected from the catalogue.
-  const [cart, setCart] = useState([]);
+  const [cart, dispatch] = useReducer(cartReducer, initialCart);
 
   // Load the user's personal collection from localStorage
   // when the application first starts.
@@ -51,42 +80,23 @@ export function AppProvider({ children }) {
   // in localStorage.
   const logout = () => {
     setUser(null);
-    setCart([]);
+    dispatch({ type: "clear" });
   };
 
   // CREATE a cart item.
   // Prevent the same card from being added twice.
   const addToCart = (card) => {
-    setCart((prev) => {
-      const alreadyInCart = prev.some(
-        (item) => item.card.id === card.id,
-      );
-
-      if (alreadyInCart) {
-        return prev;
-      }
-
-      return [
-        ...prev,
-        {
-          card,
-        },
-      ];
-    });
+    dispatch({ type: "add", payload: { card } });
   };
 
   // DELETE one card from the cart.
   const removeFromCart = (cardId) => {
-    setCart((prev) =>
-      prev.filter(
-        (item) => item.card.id !== cardId,
-      ),
-    );
+    dispatch({ type: "remove", payload: { cardId } });
   };
 
   // DELETE all cards from the cart.
   const clearCart = () => {
-    setCart([]);
+    dispatch({ type: "clear" });
   };
 
   // Checks whether a card is already in the cart.
