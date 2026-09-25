@@ -37,6 +37,18 @@ export default function Navbar() {
                 }`,
               children: "Catalogue",
             }),
+
+            _jsx(NavLink, {
+              to: "/collection",
+              className: ({ isActive }) =>
+                `px-3 py-1.5 text-sm rounded-lg transition-colors font-medium ${
+                  isActive
+                    ? "bg-[#f5c518]/15 text-[#111110]"
+                    : "text-[#6b6b64] hover:text-[#111110] hover:bg-[#f0eeec]"
+                }`,
+              children: "My Collection",
+            }),
+
             _jsx(NavLink, {
               to: "/cart",
               className: ({ isActive }) =>
