@@ -28,6 +28,11 @@ jobs:
           node-version: '24'
       # A pnpm lockfile is supplied; npm install also works for this scaffold.
       - run: npm install
+      - name: Check TCGdex variables
+        run: |
+          echo "BASE_URL=${{ vars.VITE_TCGDEX_API_BASE_URL }}"
+          echo "CARDS_ENDPOINT=${{ vars.VITE_TCGDEX_API_CARDS_ENDPOINT }}"
+          echo "CARD_LIMIT=${{ vars.VITE_TCGDEX_API_CARD_LIMIT }}"
       - run: npm run build
         env:
           VITE_TCGDEX_API_BASE_URL: ${{ vars.VITE_TCGDEX_API_BASE_URL }}
