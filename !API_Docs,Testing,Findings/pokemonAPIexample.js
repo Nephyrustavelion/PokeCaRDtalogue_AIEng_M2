@@ -8,132 +8,132 @@ const language = "en";
 const cardId = "swsh3-136";
 const API_URL = `https://api.tcgdex.net/v2/${language}/cards/${cardId}`;
 
-// fetch(API_URL)
-//   .then((response) => {
-//     if (!response.ok) {
-//       throw new Error(`Could not fetch card: ${response.status}`);
-//     }
+fetch(API_URL)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`Could not fetch card: ${response.status}`);
+    }
 
-//     return response.json();
-//   })
-//   .then((card) => {
-//     console.log(card.name);       // Furret
-//     console.log(card.hp);         // 110
-//     console.log(card.types);      // ["Colorless"]
-//     console.log(card.image);      // Image URL
-//     console.log(card);
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
+    return response.json();
+  })
+  .then((card) => {
+    console.log(card.name);       // Furret
+    console.log(card.hp);         // 110
+    console.log(card.types);      // ["Colorless"]
+    console.log(card.image);      // Image URL
+    console.log(card);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
-// async function fetchCardData(url) {
-//   try {
-//     const response = await fetch(url);
+async function fetchCardData(url) {
+  try {
+    const response = await fetch(url);
 
-//     if (!response.ok) {
-//       throw new Error(`Could not fetch card: ${response.status}`);
-//     }
+    if (!response.ok) {
+      throw new Error(`Could not fetch card: ${response.status}`);
+    }
 
-//     const card = await response.json();
+    const card = await response.json();
 
-//     console.log(`Name: ${card.name}`);
-//     console.log(`HP: ${card.hp}`);
-//     console.log(`Types: ${card.types?.join(", ")}`);
-//     console.log(`Set: ${card.set?.name}`);
-//     console.log(`Image: ${card.image}`);
-//     console.log(`Rarity: ${card.rarity}`);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+    console.log(`Name: ${card.name}`);
+    console.log(`HP: ${card.hp}`);
+    console.log(`Types: ${card.types?.join(", ")}`);
+    console.log(`Set: ${card.set?.name}`);
+    console.log(`Image: ${card.image}`);
+    console.log(`Rarity: ${card.rarity}`);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-// fetchCardData(API_URL);
+fetchCardData(API_URL);
 
 
 ///
 
-const BASE_URL = "https://api.tcgdex.net/v2/en";
+// const BASE_URL = "https://api.tcgdex.net/v2/en";
 
-async function fetchJson(url, retries = 3) {
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const response = await fetch(url);
+// async function fetchJson(url, retries = 3) {
+//   for (let attempt = 1; attempt <= retries; attempt++) {
+//     try {
+//       const response = await fetch(url);
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+//       if (!response.ok) {
+//         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+//       }
 
-      return await response.json();
-    } catch (error) {
-      if (attempt === retries) {
-        throw error;
-      }
+//       return await response.json();
+//     } catch (error) {
+//       if (attempt === retries) {
+//         throw error;
+//       }
 
-      console.warn(`Request failed. Retrying (${attempt}/${retries})...`);
-      await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
-    }
-  }
-}
+//       console.warn(`Request failed. Retrying (${attempt}/${retries})...`);
+//       await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
+//     }
+//   }
+// }
 
-async function fetchAllCards() {
-  const pageSize = 100;
-  const allCards = [];
+// async function fetchAllCards() {
+//   const pageSize = 100;
+//   const allCards = [];
 
-  for (let page = 1; ; page++) {
-    const url =
-      `${BASE_URL}/cards` +
-      `?pagination:page=${page}` +
-      `&pagination:itemsPerPage=${pageSize}`;
+//   for (let page = 1; ; page++) {
+//     const url =
+//       `${BASE_URL}/cards` +
+//       `?pagination:page=${page}` +
+//       `&pagination:itemsPerPage=${pageSize}`;
 
-    const cards = await fetchJson(url);
+//     const cards = await fetchJson(url);
 
-    allCards.push(...cards);
-    console.log(`Page ${page}: fetched ${cards.length} cards`);
+//     allCards.push(...cards);
+//     console.log(`Page ${page}: fetched ${cards.length} cards`);
 
-    // A partially filled page is the final page.
-    if (cards.length < pageSize) {
-      break;
-    }
-  }
+//     // A partially filled page is the final page.
+//     if (cards.length < pageSize) {
+//       break;
+//     }
+//   }
 
-  return allCards;
-}
+//   return allCards;
+// }
 
-async function getAvailableValues() {
-  try {
-    // These endpoints are small enough to request concurrently.
-    const [types, rarities, sets] = await Promise.all([
-      fetchJson(`${BASE_URL}/types`),
-      fetchJson(`${BASE_URL}/rarities`),
-      fetchJson(`${BASE_URL}/sets`),
-    ]);
+// async function getAvailableValues() {
+//   try {
+//     // These endpoints are small enough to request concurrently.
+//     const [types, rarities, sets] = await Promise.all([
+//       fetchJson(`${BASE_URL}/types`),
+//       fetchJson(`${BASE_URL}/rarities`),
+//       fetchJson(`${BASE_URL}/sets`),
+//     ]);
 
-    // Fetch the large cards collection page by page.
-    const cards = await fetchAllCards();
+//     // Fetch the large cards collection page by page.
+//     const cards = await fetchAllCards();
 
-    const setNames = sets
-      .map((set) => set.name)
-      .filter(Boolean)
-      .sort();
+//     const setNames = sets
+//       .map((set) => set.name)
+//       .filter(Boolean)
+//       .sort();
 
-    const uniqueNames = [
-      ...new Set(cards.map((card) => card.name).filter(Boolean)),
-    ].sort();
+//     const uniqueNames = [
+//       ...new Set(cards.map((card) => card.name).filter(Boolean)),
+//     ].sort();
 
-    console.log("\nTypes:", types);
-    console.log("\nRarities:", rarities);
-    console.log("\nTotal sets:", setNames.length);
-    console.log("Set names:", setNames);
-    console.log("\nTotal card records:", cards.length);
-    console.log("Total unique card names:", uniqueNames.length);
-    console.log("Unique card names:", uniqueNames);
-  } catch (error) {
-    console.error("TCGdex request failed:", error.message);
-  }
-}
+//     console.log("\nTypes:", types);
+//     console.log("\nRarities:", rarities);
+//     console.log("\nTotal sets:", setNames.length);
+//     console.log("Set names:", setNames);
+//     console.log("\nTotal card records:", cards.length);
+//     console.log("Total unique card names:", uniqueNames.length);
+//     console.log("Unique card names:", uniqueNames);
+//   } catch (error) {
+//     console.error("TCGdex request failed:", error.message);
+//   }
+// }
 
-getAvailableValues();
+// getAvailableValues();
 
 
 
