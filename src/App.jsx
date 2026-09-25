@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import Catalogue from "./pages/Catalogue";
 import Cart from "./pages/Cart";
@@ -22,6 +22,6 @@ function AppRoutes() {
 }
 export default function App() {
   return _jsx(AppProvider, {
-    children: _jsx(BrowserRouter, { children: _jsx(AppRoutes, {}) }),
+    children: _jsx(HashRouter, { children: _jsx(AppRoutes, {}) }),
   });
 }
