@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import Catalogue from "./pages/Catalogue";
 import Cart from "./pages/Cart";
+import Collection from "./pages/Collection";
 
 function AppRoutes() {
   return _jsxs(Routes, {
@@ -12,6 +13,7 @@ function AppRoutes() {
         element: _jsx(Navigate, { to: "/pokemon", replace: true }),
       }),
       _jsx(Route, { path: "/pokemon", element: _jsx(Catalogue, {}) }),
+      _jsx(Route, { path: "/collection", element: _jsx(Collection, {}) }),
       _jsx(Route, { path: "/cart", element: _jsx(Cart, {}) }),
       _jsx(Route, {
         path: "*",
