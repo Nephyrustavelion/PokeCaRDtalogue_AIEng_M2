@@ -11,17 +11,8 @@ const __dirname = path.dirname(
 export default defineConfig(({ mode }) => {
   const emitSourcemaps = mode === "development";
 
-  // GitHub Actions automatically provides GITHUB_REPOSITORY
-  // in the format "owner/repository".
-  const ghPagesRepoName =
-    process.env.GITHUB_REPOSITORY?.split("/")[1];
-
   return {
-    // Local development → "/"
-    // GitHub Pages → "/repository-name/"
-    base: ghPagesRepoName
-      ? `/${ghPagesRepoName}/`
-      : "/",
+    base: "/",
 
     build: {
       sourcemap: emitSourcemaps ? "inline" : false,
@@ -37,17 +28,6 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
-    },
-
-    server: {
-      host: "0.0.0.0",
-      port: parseInt(process.env.PORT || "8443"),
-      strictPort: true,
-    },
-
-    preview: {
-      host: "0.0.0.0",
-      port: parseInt(process.env.PORT || "8443"),
     },
   };
 });
