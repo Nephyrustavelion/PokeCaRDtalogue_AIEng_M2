@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { ShoppingCart, LogOut, User } from "lucide-react";
 
@@ -10,6 +10,11 @@ export default function Navbar() {
   const { user, logout, cart } = useApp();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleMobileNavigation = (event) => {
+    navigate(event.target.value);
+  };
 
   const handleLogout = () => {
     logout();
@@ -25,19 +30,55 @@ export default function Navbar() {
 
   return (
     <header className="navbar sticky top-0 z-50 w-full border-b">
-      <div className="app-shell px-6 h-14 flex items-center justify-between gap-6">
+      <div className="app-shell relative px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
         {/* Brand */}
         <NavLink to="/catalogue" className="flex items-center gap-2 shrink-0">
           <span className="navbar__brand text-lg font-bold tracking-tight">
-            Poké Card Atlas
+            <span className="hidden sm:inline">Poké Card Atlas</span>
+            {/* The above means:
+               Mobile (< 640px)     → hidden
+               Desktop (≥ 640px)    → flex */}
+
+            <span className="sm:hidden">PCA</span>
           </span>
         </NavLink>
 
+        {/* Mobile navigation */}
+        <div className="sm:hidden absolute left-1/2 -translate-x-1/2">
+          <label htmlFor="mobile-navigation" className="sr-only">
+            Navigate to page
+          </label>
+
+          <select
+            id="mobile-navigation"
+            value={location.pathname}
+            onChange={handleMobileNavigation}
+            className="
+              bg-white/90
+              border
+              border-stone-200
+              rounded-lg
+              px-3
+              py-1.5
+              text-sm
+              font-medium
+              text-[#3a3a38]
+              shadow-sm
+              outline-none
+              cursor-pointer
+            "
+          >
+            <option value="/catalogue">Catalogue</option>
+            <option value="/collection">My Collection</option>
+            <option value="/cart">My Cart</option>
+          </select>
+        </div>
+
         {/* Main navigation */}
         <nav className="hidden sm:flex items-center gap-1">
-          <NavLink to="/login" className={navLinkClass}>
+          {/* <NavLink to="/login" className={navLinkClass}>
             Login
-          </NavLink>
+          </NavLink> */}
 
           <NavLink to="/catalogue" className={navLinkClass}>
             Catalogue

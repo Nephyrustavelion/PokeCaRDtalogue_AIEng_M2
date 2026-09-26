@@ -9,7 +9,10 @@ import {
   DEFAULT_RARITY_BADGE_STYLE,
 } from "../utils/pokemonTypeStyles";
 
+import cartReducer from "../context/AppContext";
+
 import "./PokemonCardTile.css";
+import { useReducer } from "react";
 
 // Small reusable badge for Pokémon type and rarity.
 function Badge({ label, style }) {
@@ -30,7 +33,7 @@ function Badge({ label, style }) {
 export function PokemonCardSkeleton() {
   return (
     <div className="pokemon-card-skeleton bg-white rounded-xl border overflow-hidden">
-      <div className="skeleton-pulse bg-[#f0eeec] aspect-[3/4] w-full" />
+      <div className="skeleton-pulse bg-[#f0eeec] aspect-3/4 w-full" />
 
       <div className="p-3 space-y-2">
         <div className="skeleton-pulse h-4 bg-[#f0eeec] rounded w-3/4" />
@@ -156,7 +159,9 @@ export default function PokemonCardTile({
             <button
               type="button"
               className="pokemon-card-action--in-cart w-full py-2 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
-              onClick={() => onAddToCart(card)}
+              // Instead of onAddToCart, used useReducer for cart
+              // Before: onClick={() => onAddToCart(card)}
+              onClick={() => useReducer(cartReducer, card)}
             >
               <Check size={12} />
               In Cart
@@ -165,7 +170,7 @@ export default function PokemonCardTile({
             <button
               type="button"
               className="pokemon-card-action--add w-full py-2 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all hover:opacity-90 active:scale-[0.98]"
-              onClick={() => onAddToCart(card)}
+              onClick={() => useReducer(cartReducer, card)}
             >
               <ShoppingCart size={12} />
               Add to Cart

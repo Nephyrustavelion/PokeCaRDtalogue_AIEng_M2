@@ -70,6 +70,7 @@ function CheckItem({ label, checked, onChange, color }) {
  * collapsible Rarities and Set Names sections. `selected === null` means
  * "no restriction (all)" — distinct from an explicit empty array, which
  * means the user deliberately unticked every option. */
+
 function MultiSelectPanel({ options, selected, onChange }) {
   const effectiveSelected = selected ?? options;
   const allSelected = selected === null;
