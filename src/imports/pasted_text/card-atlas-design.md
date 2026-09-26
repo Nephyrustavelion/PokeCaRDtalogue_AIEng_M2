@@ -1,4 +1,4 @@
-Design a responsive desktop-first Pokémon trading card catalogue web application called **Card Atlas**.
+Design a responsive desktop-first Pokémon trading card catalogue web application called **Poké Card Atlas**.
 
 The application allows users to log in, browse Pokémon cards, filter/search the catalogue, add cards to a cart, and complete a mock checkout.
 
@@ -53,7 +53,7 @@ Use shadcn/ui patterns wherever appropriate:
 For authenticated pages, create a shared top navigation bar.
 
 Left:
-- Card Atlas logo / wordmark
+- Poké Card Atlas logo / wordmark
 
 Navigation:
 - Catalogue
@@ -109,7 +109,7 @@ Small eyebrow:
 A HOME FOR YOUR FAVOURITE CARDS
 
 Large heading:
-Card Atlas
+Poké Card Atlas
 
 Description:
 "Explore Pokémon trading-card artwork and build your personal collection."

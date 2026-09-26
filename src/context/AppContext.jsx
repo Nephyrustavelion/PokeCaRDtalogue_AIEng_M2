@@ -1,5 +1,3 @@
-import { jsx as _jsx } from "react/jsx-runtime";
-
 import {
   createContext,
   useContext,
@@ -14,6 +12,7 @@ function cartReducer(state, action) {
   switch (action.type) {
     case "add": {
       const { card } = action.payload;
+
       const alreadyInCart = state.some((item) => item.card.id === card.id);
 
       if (alreadyInCart) {
@@ -45,29 +44,21 @@ export function AppProvider({ children }) {
   const [user, setUser] = useState(null);
 
   // Stores cards temporarily selected from the catalogue.
+  // useReducer manages the cart actions.
   const [cart, dispatch] = useReducer(cartReducer, initialCart);
 
   // Load the user's personal collection from localStorage
   // when the application first starts.
   const [collection, setCollection] = useState(() => {
-    const savedCollection = localStorage.getItem(
-      "pokemonCollection",
-    );
+    const savedCollection = localStorage.getItem("pokemonCollection");
 
-    // If a saved collection exists, convert the JSON string
-    // back into a JavaScript array.
-    return savedCollection
-      ? JSON.parse(savedCollection)
-      : [];
+    return savedCollection ? JSON.parse(savedCollection) : [];
   });
 
   // Save the collection to localStorage whenever
   // the collection state changes.
   useEffect(() => {
-    localStorage.setItem(
-      "pokemonCollection",
-      JSON.stringify(collection),
-    );
+    localStorage.setItem("pokemonCollection", JSON.stringify(collection));
   }, [collection]);
 
   // Simple mock login.
@@ -76,53 +67,52 @@ export function AppProvider({ children }) {
   };
 
   // Logging out clears the user and temporary cart.
-  // The personal collection is kept because it is saved
-  // in localStorage.
+  // The personal collection remains in localStorage.
   const logout = () => {
     setUser(null);
     dispatch({ type: "clear" });
   };
 
-  // CREATE a cart item.
-  // Prevent the same card from being added twice.
+  // CREATE
+  // Add a card to the cart.
   const addToCart = (card) => {
-    dispatch({ type: "add", payload: { card } });
+    dispatch({
+      type: "add",
+      payload: { card },
+    });
   };
 
-  // DELETE one card from the cart.
+  // DELETE
+  // Remove one card from the cart.
   const removeFromCart = (cardId) => {
-    dispatch({ type: "remove", payload: { cardId } });
+    dispatch({
+      type: "remove",
+      payload: { cardId },
+    });
   };
 
-  // DELETE all cards from the cart.
+  // DELETE
+  // Remove all cards from the cart.
   const clearCart = () => {
-    dispatch({ type: "clear" });
+    dispatch({
+      type: "clear",
+    });
   };
 
-  // Checks whether a card is already in the cart.
+  // Check whether a card is already in the cart.
   const isInCart = (cardId) => {
-    return cart.some(
-      (item) => item.card.id === cardId,
-    );
+    return cart.some((item) => item.card.id === cardId);
   };
 
   // CREATE
-  // Adds a user-created card to the personal collection.
+  // Add a user-created card to the personal collection.
   const addToCollection = (card) => {
-    setCollection((prev) => [
-      ...prev,
-      card,
-    ]);
+    setCollection((prev) => [...prev, card]);
   };
 
   // UPDATE
-  // Updates selected fields for one card in the collection.
-  // In the current project this is used to update
-  // the user's personal note.
-  const updateCollectionCard = (
-    cardId,
-    updates,
-  ) => {
+  // Update selected fields of a collection card.
+  const updateCollectionCard = (cardId, updates) => {
     setCollection((prev) =>
       prev.map((card) =>
         card.id === cardId
@@ -136,48 +126,41 @@ export function AppProvider({ children }) {
   };
 
   // DELETE
-  // Removes one user-created card from the collection.
+  // Remove one card from the collection.
   const removeFromCollection = (cardId) => {
-    setCollection((prev) =>
-      prev.filter(
-        (card) => card.id !== cardId,
-      ),
-    );
+    setCollection((prev) => prev.filter((card) => card.id !== cardId));
   };
 
-  // Share state and functions with components
-  // that use the useApp() custom hook.
-  return _jsx(AppContext.Provider, {
-    value: {
-      user,
-      login,
-      logout,
+  return (
+    <AppContext.Provider
+      value={{
+        user,
+        login,
+        logout,
 
-      cart,
-      addToCart,
-      removeFromCart,
-      clearCart,
-      isInCart,
+        cart,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        isInCart,
 
-      collection,
-      addToCollection,
-      updateCollectionCard,
-      removeFromCollection,
-    },
-
-    children: children,
-  });
+        collection,
+        addToCollection,
+        updateCollectionCard,
+        removeFromCollection,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 }
 
 // Custom hook used by components to access AppContext.
 export function useApp() {
   const ctx = useContext(AppContext);
 
-  // Helpful error if useApp() is called outside AppProvider.
   if (!ctx) {
-    throw new Error(
-      "useApp must be used within AppProvider",
-    );
+    throw new Error("useApp must be used within AppProvider");
   }
 
   return ctx;
