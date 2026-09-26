@@ -1,29 +1,64 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AppProvider } from "./context/AppContext";
+import { HashRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+
+import { AppProvider, useApp } from "./context/AppContext";
+
 import Catalogue from "./pages/Catalogue";
 import Cart from "./pages/Cart";
+import Login from "./pages/Login";
 import Collection from "./pages/Collection";
+import NotFound from "./pages/NotFound";
+
+function ProtectedRoute() {
+  const { user } = useApp();
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
+}
+
+function HomeRedirect() {
+  const { user } = useApp();
+
+  return <Navigate to={user ? "/catalogue" : "/login"} replace />;
+}
+
+function LoginRoute() {
+  const { user } = useApp();
+
+  if (user) {
+    return <Navigate to="/catalogue" replace />;
+  }
+
+  return <Login />;
+}
 
 function AppRoutes() {
-  return _jsxs(Routes, {
-    children: [
-      _jsx(Route, {
-        path: "/",
-        element: _jsx(Navigate, { to: "/pokemon", replace: true }),
-      }),
-      _jsx(Route, { path: "/pokemon", element: _jsx(Catalogue, {}) }),
-      _jsx(Route, { path: "/collection", element: _jsx(Collection, {}) }),
-      _jsx(Route, { path: "/cart", element: _jsx(Cart, {}) }),
-      _jsx(Route, {
-        path: "*",
-        element: _jsx(Navigate, { to: "/pokemon", replace: true }),
-      }),
-    ],
-  });
+  return (
+    <Routes>
+      {/* Default route */}
+      <Route path="/" element={<HomeRedirect />} />
+      {/* Public route */}
+      <Route path="/login" element={<LoginRoute />} />
+      {/* Protected routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/catalogue" element={<Catalogue />} />
+        <Route path="/collection" element={<Collection />} />
+        <Route path="/cart" element={<Cart />} />
+      </Route>
+      {/* 404 route */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
 }
+
 export default function App() {
-  return _jsx(AppProvider, {
-    children: _jsx(HashRouter, { children: _jsx(AppRoutes, {}) }),
-  });
+  return (
+    <AppProvider>
+      <HashRouter>
+        <AppRoutes />
+      </HashRouter>
+    </AppProvider>
+  );
 }
