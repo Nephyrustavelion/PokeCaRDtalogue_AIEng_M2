@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .collection-page {
   padding: 32px 24px;
 }
@@ -26,6 +28,59 @@
   margin-bottom: 18px;
 }
 
+/* GLASSMORPHISM */
+.collection-empty {
+  @apply bg-white/85 backdrop-blur-xl backdrop-saturate-150 border border-stone-200 shadow-sm;
+  border-style: dashed;
+  border-radius: 14px;
+  padding: 24px;
+  color: #6f6b64;
+  font-size: 0.95rem;
+}
+
+.collection-edit-panel {
+  @apply bg-white/90 backdrop-blur-xl backdrop-saturate-150 border border-stone-200 shadow-xl;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.collection-edit-panel textarea {
+  @apply bg-white/95 backdrop-blur-md border border-stone-200;
+  width: 100%;
+  min-height: 100px;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: #222222;
+  outline: none;
+  resize: vertical;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.collection-edit-panel textarea:focus {
+  @apply bg-white/80;
+  border-color: #f0c419;
+  box-shadow: 0 0 0 3px rgba(240,196,25,0.18);
+}
+
+.collection-cancel-button {
+  @apply bg-white/88 backdrop-blur-md border border-stone-200;
+  color: #2f2f2f;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/*
+NON-GLASS VERSION
 .collection-empty {
   background: #fffdfb;
   border: 1px dashed #d9d3ca;
@@ -35,15 +90,35 @@
   font-size: 0.95rem;
 }
 
-/* Edit panel */
 .collection-edit-panel {
   background: #ffffff;
   border: 1px solid #e7e2da;
   border-radius: 18px;
   padding: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.04);
+  box-shadow: 0 8px 24px rgba(20,20,20,0.04);
 }
+
+.collection-edit-panel textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid #d9d3ca;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  background: #fffdfb;
+  color: #222222;
+  outline: none;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.collection-cancel-button {
+  border: 1px solid #d9d3ca;
+  background: #ffffff;
+  color: #2f2f2f;
+}
+*/
 
 .collection-edit-title {
   font-size: 1.15rem;
@@ -58,30 +133,6 @@
   margin: 0 0 12px 0;
 }
 
-/* Controlled textarea */
-.collection-edit-panel textarea {
-  width: 100%;
-  min-height: 100px;
-  border: 1px solid #d9d3ca;
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 0.95rem;
-  background: #fffdfb;
-  color: #222222;
-  outline: none;
-  resize: vertical;
-  box-sizing: border-box;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.collection-edit-panel textarea:focus {
-  border-color: #f0c419;
-  box-shadow: 0 0 0 3px rgba(240, 196, 25, 0.18);
-}
-
-/* Edit action buttons */
 .collection-edit-actions {
   display: flex;
   gap: 10px;
@@ -102,36 +153,14 @@
     transform 0.1s ease;
 }
 
-.collection-save-button:hover {
-  opacity: 0.92;
-}
+.collection-save-button:hover { opacity: 0.92; }
+.collection-save-button:active { transform: scale(0.98); }
+.collection-cancel-button:hover { @apply bg-white/75; }
 
-.collection-save-button:active {
-  transform: scale(0.98);
-}
-
-.collection-cancel-button {
-  border: 1px solid #d9d3ca;
-  background: #ffffff;
-  color: #2f2f2f;
-  font-weight: 600;
-  font-size: 0.95rem;
-  border-radius: 12px;
-  padding: 10px 18px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.collection-cancel-button:hover {
-  background: #f7f5f2;
-}
-
-/* Keep the card grid consistent with the catalogue */
 .collection-page .catalogue-grid {
   width: 100%;
 }
 
-/* Mobile layout */
 @media (max-width: 768px) {
   .collection-page {
     padding: 24px 16px;

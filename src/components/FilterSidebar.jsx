@@ -215,7 +215,7 @@ export default function FilterSidebar({
             {metaTypes.map((type) => (
               <CheckItem
                 key={type}
-                label={type}
+                label={type === "Colorless" ? "Normal" : type}
                 checked={filters.types.includes(type)}
                 onChange={() => toggleType(type)}
                 color={TYPE_SWATCH_COLORS[type]}
